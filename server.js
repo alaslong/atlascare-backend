@@ -1,5 +1,5 @@
 const express = require('express');
-const morgan = require('morgan'); 
+const morgan = require('morgan');
 const cors = require('cors');
 const { convertResponseToCamelCase, convertRequestToSnakeCase } = require('./middleware/caseConverters');
 require('dotenv').config();
@@ -10,14 +10,16 @@ const PORT = 3000;
 // Import routes
 const authRoutes = require('./routes/auth');
 const practiceRoutes = require('./routes/practices');
-const inventoryRoutes = require('./routes/inventories'); // Import inventories routes
+const inventoryRoutes = require('./routes/inventories');
+const productRoutes = require('./routes/products');
 
-app.use(morgan('dev')); 
+// Basic middlewares
+app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 app.use(convertRequestToSnakeCase);
 
-// Apply response middleware before routes
+// Middleware to convert response to camelCase
 app.use((req, res, next) => {
   const originalJson = res.json;
   res.json = (data) => {
@@ -27,11 +29,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Use the routes
+// Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api', practiceRoutes);
-app.use('/api', inventoryRoutes); // Register the inventories route
+app.use('/api', inventoryRoutes);
+app.use('/api', productRoutes);
 
+
+// Start the server
 app.listen(PORT, (error) => {
   if (!error)
     console.log("Server is Successfully Running, and App is listening on port " + PORT);

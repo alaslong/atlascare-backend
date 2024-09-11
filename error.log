@@ -1,0 +1,1 @@
+{"level":"error","message":"Error updating inventory","timestamp":"2024-09-11T15:09:46.582Z","updateError":{"code":"PGRST204","details":null,"hint":null,"message":"Could not find the 'manufactured' column of 'client_inventory_stocks' in the schema cache"}}
