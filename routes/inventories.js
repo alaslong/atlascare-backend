@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { createClient } = require('../lib/supabase'); // Assuming you have a supabase client
-const logger = require('../middleware/logger'); // Winston logger
+
 
 // Route to get all product stock for a client practice by client_practice_id
 router.get('/inventory', async (req, res, next) => {
