@@ -2,6 +2,33 @@ const express = require('express');
 const router = express.Router();
 const { createClient } = require('../lib/supabase'); // Assuming you have a supabase client
 
+// Route to fetch all inventories by practice_id
+router.get('/inventories', async (req, res, next) => {
+  try {
+    const supabase = createClient({ req, res });
+    const { client_practice_id } = req.query;
+
+    if (!client_practice_id) {
+      return res.status(400).json({ message: 'client_practice_id is required' });
+    }
+
+    // Query the `client_inventories` table to get all inventories for the practice_id
+    const { data, error } = await supabase
+      .from('client_inventories')
+      .select('*')
+      .eq('client_practice_id', client_practice_id);
+
+      if (error) {
+        return res.status(500).json({ message: 'Error fetching inventories' });
+      }
+
+    // Return the inventories in the response
+    return res.status(200).json({ inventories: data });
+
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 // Route to get all product stock for a client practice by client_practice_id
 router.get('/inventory', async (req, res, next) => {
