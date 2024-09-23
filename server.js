@@ -5,7 +5,7 @@ const { convertResponseToCamelCase, convertRequestToSnakeCase } = require('./mid
 require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -29,12 +29,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// Define a simple route for the root URL
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
+
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api', practiceRoutes);
 app.use('/api', inventoryRoutes);
 app.use('/api', productRoutes);
-
 
 // Start the server
 app.listen(PORT, (error) => {
